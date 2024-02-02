@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 2</title>
+</head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+<style>
+    #mapi { height: 500px; width: 500px }
+</style>
+
+<body>
+    <style>
+        h1{color:palevioletred} 
+        body{
+            background-color: rgb(114, 178, 137);
+        }
+    </style>
+    </style>
+    <h1>Homework Two</h1>
+    <div id="mapi"></div> 
+    <script>
+        var map = L.map('mapi').setView([36.30246784688476, -76.2215566635132], 15);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+L.marker([36.30246784688476, -76.2215566635132]).addTo(map)
+        .bindPopup('<b>This is Elizabeth City!</b><br>This marker shows the location of Old Elizabeth City Junior High School, which is in Old Pasquotank County! The student population is 555 students and the school services grades 6-8. The student population is made up of 50% female students and 50% male students.') // message
+        .openPopup();
+    </script>
+    
+</body>
+</html>

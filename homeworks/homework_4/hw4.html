@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+     <style>
+        h1{color:palevioletred} 
+        h2{color:palevioletred} 
+    </style>
+<body style="background-color:rgb(42, 131, 74);"></body>
+<body>
+    <h1>Homework Four</h1>
+    <script src="./data/small_index.js"></script>
+    <script>
+    var geojsonMarkerOptions = { 
+        radius: 13,
+        fillColor: "#FFFFFF", 
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+    }; 
+
+    var data = L.geoJSON(small_index, {
+            pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+            }
+        })
+    </script>
+
+    <a href="./data/small_index.js"><h2>Link to Data </h2></a>
+
+</body>
+</html>
+
+
