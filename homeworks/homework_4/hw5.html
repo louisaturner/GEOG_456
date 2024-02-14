@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+     <style>
+        h1{color:palevioletred} 
+        h2{color:palevioletred} 
+    </style>
+<body style="background-color:rgb(42, 131, 74);"></body>
+
+<body>
+    <h1>Homework Five</h1>
+    <script src="./data/small_index.js"></script>
+    <script>
+        var coordinates = small_index.features.map(e => {
+            if (e.geometry && e.geometry.coordinates) {
+                return e.geometry.coordinates;
+            } else {
+                return null; 
+            }
+        });
+        var console_log = small_index.features.forEach(e => {
+            if (e.geometry && e.geometry.coordinates) {
+                console.log(e.geometry.coordinates.slice().reverse());
+            }
+        });
+        
+    </script>
+
+<button onclick= console_log >Press this to see a prinout of the console log!</button>
+
+
+</body>
+</html>
