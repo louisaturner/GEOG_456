@@ -20,16 +20,16 @@ crossorigin=""/>
 
 <body>
     <h1>Homework Five</h1>
-    <script src="./data/small_index.js"></script>
+    <script src="./data/smaller_index.js"></script>
     <script>
-        var coordinates = small_index.features.map(e => {
+        var coordinates = smaller_index.features.map(e => {
             if (e.geometry && e.geometry.coordinates) {
                 return e.geometry.coordinates;
             } else {
                 return null; 
             }
         });
-        var console_log = small_index.features.forEach(e => {
+        var console_log = smaller_index.features.forEach(e => {
             if (e.geometry && e.geometry.coordinates) {
                 console.log(e.geometry.coordinates.slice().reverse());
             }
