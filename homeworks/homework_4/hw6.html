@@ -31,13 +31,14 @@
 </style>
 </head>
 
-<script src="./data/smaller_index.js"></script>
+<script src="./data/smallest.js"></script>
 
 <body>
 <h2>Terrorism Index Table</h2>
 <table id = "mytable">
     <tr>
         <th>Country Name</th>
+        <th>Date</th>
         <th>Success</th>
         <th>Attack Type</th>
         <th>Suicide</th>
@@ -47,21 +48,24 @@
 <script>
     var x = document.getElementById('mytable')
 
-    for (var i =0; i < smaller_index.features.length; i++){
+    for (var i =0; i < smallest.features.length; i++){
         var myNewRow = document.createElement('tr');
         var myNewCell1 = document.createElement('td');
         var myNewCell2 = document.createElement('td');
         var myNewCell3 = document.createElement('td');
         var myNewCell4 = document.createElement('td');
+        var myNewCell5 = document.createElement('td');
 
-        myNewCell1.innerText = smaller_index.features[i].properties.country_name;
-        myNewCell2.innerText = smaller_index.features[i].properties.success;
-        myNewCell3.innerText = smaller_index.features[i].properties.Attack_type;
-        myNewCell4.innerText = smaller_index.features[i].properties.suicide;
+        myNewCell1.innerText = smallest.features[i].properties.country_name;
+        myNewCell2.innerText = [(smallest.features[i].properties.Month) + "/" +(smallest.features[i].properties.Day) + "/"+(smallest.features[i].properties.Year)]
+        myNewCell3.innerText = smallest.features[i].properties.success;
+        myNewCell4.innerText = smallest.features[i].properties.Attack_type;
+        myNewCell5.innerText = smallest.features[i].properties.suicide;
         myNewRow.append(myNewCell1)
         myNewRow.append(myNewCell2)
         myNewRow.append(myNewCell3)
         myNewRow.append(myNewCell4)
+        myNewRow.append(myNewCell5)
         x.append(myNewRow)
     }
 
