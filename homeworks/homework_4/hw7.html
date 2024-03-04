@@ -8,7 +8,6 @@
         integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
         crossorigin=""></script>
         <script src="data/smallest.js" ></script> 
-
     </head>
     <style>
     .slidecontainer {
@@ -75,16 +74,24 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
     
+        var icons = {
+            'Hostage Taking (Kidnapping)': L.icon({ iconUrl: './data/KidnappingIcon.png', iconSize: [10, 10] }),
+            'Assassination': L.icon({ iconUrl: './data/AssassinationIcon.png', iconSize: [10, 10] }),
+            'Bombing/Explosion': L.icon({ iconUrl: './data/BombingIcon.png', iconSize: [10, 10] }),
+            'Facility/Infrastructure Attack': L.icon({ iconUrl: './data/FacilityAttackIcon.png', iconSize: [10, 10] }),
+            'Armed Assault': L.icon({ iconUrl: './data/ArmedAssaultIcon.png', iconSize: [10, 10] }),
+            'Hijacking': L.icon({ iconUrl: './data/HijackingIcon.png', iconSize: [10, 10] }),
+            'Unknown': L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }),
+            'Unarmed Assault': L.icon({ iconUrl: './data/UnarmedAssaultIcon.png', iconSize: [10, 10] }),
+            'Hostage Taking (Barricade Incident)': L.icon({ iconUrl: './data/BarricadeIcon.png', iconSize: [10, 10] })
+        };
 
-    var attackIcon = L.icon({   // notice the L.icon which is a Leaflet object with properties
-        iconUrl: "./data/icon.png",
-          // this points to a jpg image obtained from the internet
-        iconSize: [10,10], // size of the icon
-        popupAnchor: [0,0] // where the icon is located relative to the lat lon of the point. 
-        });
+        function getIcon(type) {
+            return icons[type] || L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }); // Default icon if type not found
+        };
 
-    var slider = document.getElementById("yearRange");
-    var output = document.getElementById("yearDisplay");
+        var slider = document.getElementById("yearRange");
+        var output = document.getElementById("yearDisplay");
 
     var attackLayer;
     function updateMap(year) {
@@ -95,8 +102,11 @@
                 return feature.properties.Year == year;
             });
             attackLayer = L.geoJSON(filteredFeatures, {
-                pointToLayer: function (feature, latlng) {
-                    return L.marker(latlng, { icon: attackIcon});
+                pointToLayer: function(feature, latlng) {
+                    var properties = feature.properties;
+                    var attackType = properties['Attack_type'];
+                    var icon = getIcon(attackType);
+                    return L.marker(latlng, { icon: icon });
                 }
             }).addTo(map);
             document.getElementById('yearDisplay').innerText = year;
@@ -108,6 +118,23 @@
         };
 
         updateMap(yearSlider.value);
+
+        //legend
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend'),
+        attackTypes = Object.keys(icons);
+
+    for (var i = 0; i < attackTypes.length; i++) {
+        var attackType = attackTypes[i];
+        div.innerHTML +=
+            '<img src="' + icons[attackType].options.iconUrl + '" width="20" height="20">' + attackType + '<br>';
+    }
+    return div;
+};
+
+legend.addTo(map);
 
     </script>
     </body>
