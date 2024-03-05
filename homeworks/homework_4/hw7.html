@@ -9,8 +9,8 @@
         integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
         crossorigin=""></script>
         <script src="data/smallest.js" ></script> 
-    </head>
-    <style>
+</head>
+<style>
     .slidecontainer {
     width: 60%;
     }
@@ -107,7 +107,13 @@
                     var properties = feature.properties;
                     var attackType = properties['Attack_type'];
                     var icon = getIcon(attackType);
-                    return L.marker(latlng, { icon: icon });
+                    var marker = L.marker(latlng, { icon: icon });
+
+                    if (properties.summary) {
+                        marker.bindPopup(properties.summary);
+                    }
+
+                    return marker;
                 }
             }).addTo(map);
             document.getElementById('yearDisplay').innerText = year;
@@ -121,22 +127,22 @@
         updateMap(yearSlider.value);
 
         //legend
-    var legend = L.control({position: 'bottomright'});
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend'),
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
         attackTypes = Object.keys(icons);
 
         div.innerHTML = '<h4>Attack Type Key</h4>';
 
-    for (var i = 0; i < attackTypes.length; i++) {
-        var attackType = attackTypes[i];
-        div.innerHTML +=
-            '<img src="' + icons[attackType].options.iconUrl + '" width="20" height="20">' + attackType + '<br>';
-    }
-    return div;
-};
+        for (var i = 0; i < attackTypes.length; i++) {
+            var attackType = attackTypes[i];
+            div.innerHTML +=
+                '<img src="' + icons[attackType].options.iconUrl + '" width="20" height="20">' + attackType + '<br>';
+        }
+        return div;
+        };
 
-legend.addTo(map);
+    legend.addTo(map);
 
     </script>
     <h3>Data is from <a href="https://www.start.umd.edu/gtd/">Global Terrorism Database</a>, but please note, data is missing for 1993 (data was lost in an office move and the source reports the data has never been fully recovered)! Unlike many other event databases, the GTD includes systematic data on domestic as well as transnational and international terrorist incidents that have occurred during this time period and now includes more than 200,000 cases.</h3>
