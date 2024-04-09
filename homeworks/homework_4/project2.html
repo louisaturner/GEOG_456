@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Project - Map 2!</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+</head>
+
+<style>
+    #mapid{ width: 100%; height: 670px; }
+
+    h1 {
+        text-align: center;
+        color:black;
+        font-size: xx-large;
+     }
+    h3 {
+        color:black;
+        font-size: x-large;
+    }
+
+    h4 {
+        color:black;
+        font-size: large;
+    }
+
+    .legend {
+            background-color: rgba(246, 239, 239, 0.7); /* Adjust the last value (0.8) for transparency */
+            padding: 0 10px 10px 10px; /* top: 0, right: 10px, bottom: 10px, left: 10px */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+</style>
+
+<body>
+    <h1>Incidents in the Middle East During The Lebanese Civil War (1975-1989) by Attack Type</h1>
+    <div id="mapid"></div>
+    <script src="data/smallest.js"></script> 
+<script>
+
+var map = L.map('mapid').setView([33.81673596567925, 45], 6); 
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
+}).addTo(map);
+
+var filteredFeatures = smallest.features.filter(function(feature) {
+    var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
+    var startDate = new Date(1975, 0, 1); 
+    var endDate = new Date(1989, 11, 31); 
+    var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+    return desiredCountries.includes(feature.properties.country_name) &&
+        featureDate >= startDate && featureDate <= endDate;
+});
+
+// Creating a Marker Cluster Group
+var markers = L.markerClusterGroup();
+
+// Define icons
+var icons = {
+    'Hostage Taking (Kidnapping)': L.icon({ iconUrl: './data/KidnappingIcon.png', iconSize: [10, 10] }),
+    'Assassination': L.icon({ iconUrl: './data/AssassinationIcon.png', iconSize: [10, 10] }),
+    'Bombing/Explosion': L.icon({ iconUrl: './data/BombingIcon.png', iconSize: [10, 10] }),
+    'Facility/Infrastructure Attack': L.icon({ iconUrl: './data/FacilityAttackIcon.png', iconSize: [10, 10] }),
+    'Armed Assault': L.icon({ iconUrl: './data/ArmedAssaultIcon.png', iconSize: [10, 10] }),
+    'Hijacking': L.icon({ iconUrl: './data/HijackingIcon.png', iconSize: [10, 10] }),
+    'Unknown': L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }),
+    'Unarmed Assault': L.icon({ iconUrl: './data/UnarmedAssaultIcon.png', iconSize: [10, 10] }),
+    'Hostage Taking (Barricade Incident)': L.icon({ iconUrl: './data/BarricadeIcon.png', iconSize: [10, 10] })
+};
+
+// Function to get icon based on attack type
+function getIcon(type) {
+    return icons[type] || L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }); // Default icon if type not found
+};
+
+attackLayer = L.geoJSON(filteredFeatures, {
+    pointToLayer: function(feature, latlng) {
+    var properties = feature.properties;
+    var attackType = properties['Attack_type'];
+    var icon = getIcon(attackType);
+    var marker = L.marker(latlng, { icon: icon });
+
+    if (properties.summary) {
+        marker.bindPopup(properties.summary);
+    }
+    
+    markers.addLayer(marker); 
+}
+})
+
+map.addLayer(markers);
+
+//legend
+var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        attackTypes = Object.keys(icons);
+
+        div.innerHTML = '<h4>Attack Type</h4>';
+
+        for (var i = 0; i < attackTypes.length; i++) {
+            var attackType = attackTypes[i];
+            div.innerHTML +=
+                '<img src="' + icons[attackType].options.iconUrl + '" width="20" height="20">' + attackType + '<br>';
+        }
+        return div;
+        };
+
+    legend.addTo(map);
+
+//     // toggle clusters on / off
+//     var clusteringEnabled = true;
+
+//     function toggleClustering() {
+//     if (clusteringEnabled) {
+//         map.removeLayer(markers); // Remove the marker cluster group from the map
+//     } else {
+//         map.addLayer(markers); // Add the marker cluster group back to the map
+//     }
+//     clusteringEnabled = !clusteringEnabled; // Toggle the clustering state
+// }
+// var clusteringToggle = L.control({ position: 'topright' });
+
+// clusteringToggle.onAdd = function (map) {
+//     var div = L.DomUtil.create('div', 'clustering-toggle');
+//     div.innerHTML = '<button onclick="toggleClustering()">Toggle Clustering</button>';
+//     return div;
+// };
+
+// clusteringToggle.addTo(map);
+
+</script>
+</body>
+</html>
