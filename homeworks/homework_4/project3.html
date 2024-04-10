@@ -138,6 +138,8 @@
                 var marker = L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], geojsonMarkerOptions)
                                 .bindPopup(popupContent);
 
+                // if statement to replace coordinates with some random value that doesn't appear in the map (north pole)
+
                 markers.addLayer(marker);
             });
 
@@ -147,6 +149,7 @@
         var yearSlider = document.getElementById("yearRange");
         yearSlider.oninput = function () {
             updateMap(this.value);
+            console.log(this.value)
         };
 
         updateMap(yearSlider.value);

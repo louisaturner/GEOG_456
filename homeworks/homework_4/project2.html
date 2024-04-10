@@ -45,6 +45,7 @@
     <script src="data/smallest.js"></script> 
 <script>
 
+// Upload leaflet Map
 var map = L.map('mapid').setView([33.81673596567925, 45], 6); 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -52,6 +53,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
     maxZoom: 20
 }).addTo(map);
 
+// Filters features for my data
 var filteredFeatures = smallest.features.filter(function(feature) {
     var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
     var startDate = new Date(1975, 0, 1); 
@@ -61,10 +63,10 @@ var filteredFeatures = smallest.features.filter(function(feature) {
         featureDate >= startDate && featureDate <= endDate;
 });
 
-// Creating a Marker Cluster Group
+// Creates a Marker Cluster Group
 var markers = L.markerClusterGroup();
 
-// Define icons
+// Icons
 var icons = {
     'Hostage Taking (Kidnapping)': L.icon({ iconUrl: './data/KidnappingIcon.png', iconSize: [10, 10] }),
     'Assassination': L.icon({ iconUrl: './data/AssassinationIcon.png', iconSize: [10, 10] }),
@@ -82,6 +84,7 @@ function getIcon(type) {
     return icons[type] || L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }); // Default icon if type not found
 };
 
+// attack type layer using markers 
 attackLayer = L.geoJSON(filteredFeatures, {
     pointToLayer: function(feature, latlng) {
     var properties = feature.properties;
@@ -97,6 +100,7 @@ attackLayer = L.geoJSON(filteredFeatures, {
 }
 })
 
+// adds markers layer to map
 map.addLayer(markers);
 
 //legend

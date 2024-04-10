@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Change</title>
+</head>
+<style>
+    body{
+        background-color: rgb(255, 255, 255);
+        font-size:20px;
+        color:rgb(0, 0, 0)
+    }
+    div#image_container{
+        top: 20%;
+        
+    }
+    img{
+        height:80%;
+        position: absolute;
+    }
+
+    #before{
+        z-index: 1;
+        opacity: 1;
+    }
+    #after{
+        z-index: 3;
+        opacity: 0;
+    }
+    h1{
+            padding-top: 1%;
+            text-align: center;
+            font-size: x-large;
+        }
+
+datalist {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 400px;
+}
+
+option {
+  padding: 0;
+}
+
+input {
+  width: 400px;
+  margin: 0;
+}
+
+</style>
+<body>
+    <h1>Changes on UNC grounds during 2012, 2016, and 2020 </h1>
+    <label for="year">Year</label><br />
+<input type="range" id="year" name="year" list="tickmarks" value="0" oninput="myFunction(this.value)"/>
+<datalist id="tickmarks">
+  <option value="0" label="2012"></option>
+  <option value="50" label="2016"></option>
+  <option value="100" label="2020"></option>
+</datalist>
+
+
+<div id="image_container">
+        <img id="after"  src="./2020new.png" alt="">
+        <img id="before" src="./2012new.png" alt="">
+        <img id="during" src="./2016new.png" alt="">
+
+    </div>
+<script>
+    function myFunction(e) {
+        console.log(e)
+        document.getElementById("after").style.opacity = e/100;
+    }
+    </script>
+</body>
+</html>

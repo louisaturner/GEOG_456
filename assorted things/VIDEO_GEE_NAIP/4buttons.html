@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4</title>
+    <style>
+        /* Style to display images overlaid on top of each other */
+        #imageContainer {
+            position: relative;
+            width: 600px; /* Set width for container */
+            height: 600px; /* Set height for container */
+            overflow: hidden; /* Hide overflow */
+        }
+
+        /* Style for individual images */
+        .image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Make image fill container */
+    height: 100%; /* Make image fill container */
+    opacity: 0; /* Initial opacity */
+    transition: opacity 0.3s ease; /* Add transition effect for opacity changes */
+}
+
+
+        /* Style for buttons */
+        .buttonContainer {
+            text-align: center; /* Center buttons horizontally */
+            margin-top: 20px; /* Adjust spacing from the top */
+        }
+
+        .imageButton {
+            margin: 0 10px; /* Adjust spacing between buttons */
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Changes in UNC images (2012, 2016, 2020)</h1>
+    
+    <!-- Container for images and controls -->
+    <div id="imageContainer">
+        <!-- Base image (2012) -->
+        <img id="image2012" class="image" src="./2012new.png" alt="UNC in 2012">
+        <!-- Overlay images (2016 and 2020) -->
+        <img id="image2016" class="image" src="./2016new.png" alt="UNC in 2016">
+        <img id="image2020" class="image" src="./2020new.png" alt="UNC in 2020">
+        <!-- Slider title -->
+        <div id="sliderTitle">Image: UNC in 2012</div>
+    </div>
+
+    <!-- Buttons to select images -->
+    <div class="buttonContainer">
+        <button class="imageButton" onclick="changeImage('image2012')">Show UNC in 2012</button>
+        <button class="imageButton" onclick="changeImage('image2016')">Show UNC in 2016</button>
+        <button class="imageButton" onclick="changeImage('image2020')">Show UNC in 2020</button>
+    </div>
+
+    <script>
+        // Function to change the displayed image
+        function changeImage(imageId) {
+            var images = document.querySelectorAll('.image');
+            // Hide all images
+            images.forEach(function(image) {
+                image.style.opacity = 0;
+            });
+            // Show the selected image
+            var selectedImage = document.getElementById(imageId);
+            selectedImage.style.opacity = 1;
+            // Update slider title
+            var sliderTitle = document.getElementById('sliderTitle');
+            sliderTitle.textContent = "Image: " + getImageYear();
+        }
+
+        // Function to get the year of the currently displayed image
+        function getImageYear() {
+            var images = document.querySelectorAll('.image');
+            for (var i = 0; i < images.length; i++) {
+                if (images[i].style.opacity == 1) {
+                    return images[i].alt.substring(images[i].alt.lastIndexOf(" ") + 1);
+                }
+            }
+            return "";
+        }
+    </script>
+</body>
+</html>
