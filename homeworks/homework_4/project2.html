@@ -64,7 +64,14 @@ var filteredFeatures = smallest.features.filter(function(feature) {
 });
 
 // Creates a Marker Cluster Group
-var markers = L.markerClusterGroup();
+var markers = L.markerClusterGroup({
+    iconCreateFunction: function(cluster) {
+        return L.divIcon({ 
+            className: 'custom-cluster-icon', // Add a custom class for styling
+            html: '<div style="background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: black;">' + cluster.getChildCount() + '</span></div>'
+        });
+    }
+});
 
 // Icons
 var icons = {
@@ -120,27 +127,6 @@ var legend = L.control({position: 'bottomright'});
         };
 
     legend.addTo(map);
-
-//     // toggle clusters on / off
-//     var clusteringEnabled = true;
-
-//     function toggleClustering() {
-//     if (clusteringEnabled) {
-//         map.removeLayer(markers); // Remove the marker cluster group from the map
-//     } else {
-//         map.addLayer(markers); // Add the marker cluster group back to the map
-//     }
-//     clusteringEnabled = !clusteringEnabled; // Toggle the clustering state
-// }
-// var clusteringToggle = L.control({ position: 'topright' });
-
-// clusteringToggle.onAdd = function (map) {
-//     var div = L.DomUtil.create('div', 'clustering-toggle');
-//     div.innerHTML = '<button onclick="toggleClustering()">Toggle Clustering</button>';
-//     return div;
-// };
-
-// clusteringToggle.addTo(map);
 
 </script>
 </body>
