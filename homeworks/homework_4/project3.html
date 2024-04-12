@@ -1,158 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Summary Incident Map in Lebanon</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <title>Final Project - Map 2!</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
-    <style>
-        #mapid{ width: 100%; height: 580px }
+</head>
 
-        .slidecontainer {
-            width: 60%;
-            margin: auto;
-            text-align: center;
-        }
+<style>
+    #mapid{ width: 100%; height: 670px; }
 
-        .slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 15px;
-            background: #d3d3d3;
-            outline: none;
-            opacity: 0.9;
-            -webkit-transition: .2s;
-            transition: opacity .1s;
-        }
-
-        .slider:hover {
-            opacity: 1;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 25px;
-            height: 25px;
-            background: #91a1e9;
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 25px;
-            height: 25px;
-            background: #91a1e9;
-            cursor: pointer;
-        }
-
-        h1 {
+    h1 {
         text-align: center;
         color:black;
         font-size: xx-large;
-    }
+     }
     h3 {
-        text-align: center;
         color:black;
         font-size: x-large;
     }
-    </style>
-</head>
+
+    h4 {
+        color:black;
+        font-size: large;
+    }
+
+    .legend {
+            background-color: rgba(246, 239, 239, 0.7); /* Adjust the last value (0.8) for transparency */
+            padding: 0 10px 10px 10px; /* top: 0, right: 10px, bottom: 10px, left: 10px */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+</style>
+
 <body>
-    <h1>Summary of Incidents within Lebanon from 1975-1989</h1>
-    <div class="slidecontainer">
-        <input type="range" min="1975" max="1989" value="1975" class="slider" id="yearRange">
-        <h3>Year: <span id="yearDisplay">1975</span></h3>
-    </div>
+    <h1>Incidents in the Middle East During The Lebanese Civil War (1975-1989) by Attack Type</h1>
     <div id="mapid"></div>
+    <script src="data/smallest.js"></script> 
+<script>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
-    <script src="data/smallest.js"></script>
+// Upload leaflet Map
+var map = L.map('mapid').setView([33.81673596567925, 45], 6); 
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
+}).addTo(map);
 
-    <script>
-        var map = L.map('mapid').setView([33.8547, 35.8623], 8);
+// Filters features for my data
+var filteredFeatures = smallest.features.filter(function(feature) {
+    var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
+    var startDate = new Date(1975, 0, 1); 
+    var endDate = new Date(1989, 11, 31); 
+    var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+    return desiredCountries.includes(feature.properties.country_name) &&
+        featureDate >= startDate && featureDate <= endDate;
+});
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
-        }).addTo(map);
+// Creates a Marker Cluster Group
+var markers = L.markerClusterGroup({
+    iconCreateFunction: function(cluster) {
+        return L.divIcon({ 
+            className: 'custom-cluster-icon', // Add a custom class for styling
+            html: '<div style="background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: black;">' + cluster.getChildCount() + '</span></div>'
+        });
+    }
+});
 
-        var desiredCountries = ["Lebanon"];
-        var filteredFeatures = [];
-        var markers = L.markerClusterGroup(); // Use markerClusterGroup instead of geoJSON
-        markers.addTo(map);
+// Icons
+var icons = {
+    'Hostage Taking (Kidnapping)': L.icon({ iconUrl: './data/KidnappingIcon.png', iconSize: [10, 10] }),
+    'Assassination': L.icon({ iconUrl: './data/AssassinationIcon.png', iconSize: [10, 10] }),
+    'Bombing/Explosion': L.icon({ iconUrl: './data/BombingIcon.png', iconSize: [10, 10] }),
+    'Facility/Infrastructure Attack': L.icon({ iconUrl: './data/FacilityAttackIcon.png', iconSize: [10, 10] }),
+    'Armed Assault': L.icon({ iconUrl: './data/ArmedAssaultIcon.png', iconSize: [10, 10] }),
+    'Hijacking': L.icon({ iconUrl: './data/HijackingIcon.png', iconSize: [10, 10] }),
+    'Unknown': L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }),
+    'Unarmed Assault': L.icon({ iconUrl: './data/UnarmedAssaultIcon.png', iconSize: [10, 10] }),
+    'Hostage Taking (Barricade Incident)': L.icon({ iconUrl: './data/BarricadeIcon.png', iconSize: [10, 10] })
+};
 
-        var updateMap = function (year) {
-            markers.clearLayers();
-            filteredFeatures = smallest.features.filter(function (feature) {
-                return feature.properties.Year == year && desiredCountries.includes(feature.properties.country_name);
-            });
+// Function to get icon based on attack type
+function getIcon(type) {
+    return icons[type] || L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }); // Default icon if type not found
+};
 
-            var incidentsByGroup = {};
+// attack type layer using markers 
+attackLayer = L.geoJSON(filteredFeatures, {
+    pointToLayer: function(feature, latlng) {
+    var properties = feature.properties;
+    var attackType = properties['Attack_type'];
+    var icon = getIcon(attackType);
+    var marker = L.marker(latlng, { icon: icon });
 
-            filteredFeatures.forEach(function (feature) {
-                var groupName = feature.properties.group_name;
-                if (groupName) {
-                    incidentsByGroup[groupName] = (incidentsByGroup[groupName] || 0) + 1;
-                }
-            });
+    if (properties.summary) {
+        marker.bindPopup(properties.summary);
+    }
+    
+    markers.addLayer(marker); 
+}
+})
 
-            var groupColors = {};
+// adds markers layer to map
+map.addLayer(markers);
 
-            // Function to generate a random color
-            function getRandomColor() {
-                var letters = '0123456789ABCDEF';
-                var color = '#';
-                for (var i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-                return color;
-            }
+//legend
+var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        attackTypes = Object.keys(icons);
 
-            // Assign random colors to each group
-            Object.keys(incidentsByGroup).forEach(function (groupName) {
-                groupColors[groupName] = getRandomColor();
-            });
+        div.innerHTML = '<h4>Attack Type</h4>';
 
-            // Add markers to markerClusterGroup
-            filteredFeatures.forEach(function (feature) {
-                var groupName = feature.properties.group_name || "Unknown";
-                var markerColor = groupColors[groupName] || "gray"; // Default color if group not found
-
-                var geojsonMarkerOptions = {
-                    radius: 5,
-                    fillColor: markerColor,
-                    color: "#000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                };
-
-                var popupContent = "<b>Date:</b> " + feature.properties.Day + "/" + feature.properties.Month + "/" + feature.properties.Year + "<br>" +
-                "<b>Group Name:</b> " + groupName + "<br>" +
-                "<b>Attack Type:</b> " + feature.properties.Attack_type + "<br>" +
-                "<b>Target:</b> " + feature.properties.Target_type + "<br>" +
-                "<b>Summary:</b> " + feature.properties.summary;
-
-                var marker = L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], geojsonMarkerOptions)
-                                .bindPopup(popupContent);
-
-                // if statement to replace coordinates with some random value that doesn't appear in the map (north pole)
-
-                markers.addLayer(marker);
-            });
-
-            document.getElementById('yearDisplay').innerText = year;
+        for (var i = 0; i < attackTypes.length; i++) {
+            var attackType = attackTypes[i];
+            div.innerHTML +=
+                '<img src="' + icons[attackType].options.iconUrl + '" width="20" height="20">' + attackType + '<br>';
+        }
+        return div;
         };
 
-        var yearSlider = document.getElementById("yearRange");
-        yearSlider.oninput = function () {
-            updateMap(this.value);
-            console.log(this.value)
-        };
+    legend.addTo(map);
 
-        updateMap(yearSlider.value);
-    </script>
+</script>
 </body>
 </html>

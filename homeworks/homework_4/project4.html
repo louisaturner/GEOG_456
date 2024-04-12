@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Summary Incident Map in Lebanon</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+    <style>
+        #mapid { width: 100%; height: 580px; }
+
+        .slidecontainer {
+            width: 60%;
+            margin: auto;
+            text-align: center;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.9;
+            -webkit-transition: .2s;
+            transition: opacity .1s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #91a1e9;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #91a1e9;
+            cursor: pointer;
+        }
+
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: xx-large;
+        }
+
+        h3 {
+            text-align: center;
+            color: black;
+            font-size: x-large;
+        }
+    </style>
+</head>
+<body>
+    <h1>Summary of Incidents within Lebanon from 1975-1989</h1>
+    <div class="slidecontainer">
+        <input type="range" min="1975" max="1989" value="1975" class="slider" id="yearRange">
+        <h3>Year: <span id="yearDisplay">1975</span></h3>
+    </div>
+    <div id="mapid"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <script src="data/smallest.js"></script>
+
+    <script>
+        var map = L.map('mapid').setView([33.8547, 35.8623], 8);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+
+        var desiredCountry = "Lebanon";
+        var markers = L.markerClusterGroup({
+            iconCreateFunction: function(cluster) {
+        return L.divIcon({ 
+            className: 'custom-cluster-icon', // Add a custom class for styling
+            html: '<div style="background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: black;">' + cluster.getChildCount() + '</span></div>'
+        });
+    }
+    });markers.addTo(map);
+
+    var updateMap = function (year) {
+    markers.clearLayers();
+    var addedCoordinates = {}; // Track added coordinates
+    var totalIncidents = 0; // Variable to track total incidents shown
+
+    smallest.features.forEach(function (feature) {
+        var properties = feature.properties;
+        if (properties.Year == year && properties.country_name == desiredCountry && feature.geometry) {
+            try {
+                var lat = feature.geometry.coordinates[1];
+                var lng = feature.geometry.coordinates[0];
+            } catch (error) {
+                console.error("Error reading coordinates:", error);
+                return; // Skip this incident if coordinates cannot be read
+            }
+
+            var coordinatesKey = lat.toFixed(3) + '_' + lng.toFixed(3); // Create a key for the coordinates
+
+            // Check if these coordinates have been added before
+            if (coordinatesKey in addedCoordinates) {
+                // Randomize the coordinates slightly
+                lat += (Math.random() - 0.5) / 150; // Adjust the randomization factor as needed
+                lng += (Math.random() - 0.5) / 150;
+            }
+            
+            addedCoordinates[coordinatesKey] = true; // Mark these coordinates as added
+
+            var popupContent = "<b>Date:</b> " + properties.Day + "/" + properties.Month + "/" + properties.Year + "<br>" +
+                "<b>Group Name:</b> " + properties.group_name + "<br>" +
+                "<b>Attack Type:</b> " + properties.Attack_type + "<br>" +
+                "<b>Target:</b> " + properties.Target_type + "(" + properties.Target_subtype + ")" + "<br>" +
+                "<b>Success:</b> " + properties.success + "<br>" +
+                "<b>Motive:</b> " + properties.motive + "<br>" +
+                "<b>Summary:</b> " + properties.summary;
+
+            var markerIcon = L.icon({
+                iconUrl: 'https://cdn2.iconfinder.com/data/icons/target-aim/100/target_01_05_destination_marker_place_contour_location_map-1024.png',
+                iconSize: [41, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+            });
+
+            var marker = L.marker([lat, lng], { icon: markerIcon }).bindPopup(popupContent);
+
+            markers.addLayer(marker);
+            totalIncidents++; // Increment total incidents count
+        }
+    });
+
+    document.getElementById('yearDisplay').innerText = year;
+    console.log("Total Incidents Shown:", totalIncidents); // Log total incidents shown
+};
+
+    var yearSlider = document.getElementById("yearRange");
+    yearSlider.oninput = function () {
+        updateMap(this.value);
+    };
+
+        updateMap(yearSlider.value);
+    </script>
+</body>
+</html>
