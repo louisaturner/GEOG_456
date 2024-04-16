@@ -83,16 +83,16 @@
         var markers = L.markerClusterGroup({
             iconCreateFunction: function(cluster) {
         return L.divIcon({ 
-            className: 'custom-cluster-icon', // Add a custom class for styling
-            html: '<div style="background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: black;">' + cluster.getChildCount() + '</span></div>'
+            className: 'custom-cluster-icon', 
+            html: '<div style="background-color: black; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: white;">' + cluster.getChildCount() + '</span></div>'
         });
     }
     });markers.addTo(map);
 
     var updateMap = function (year) {
     markers.clearLayers();
-    var addedCoordinates = {}; // Track added coordinates
-    var totalIncidents = 0; // Variable to track total incidents shown
+    var addedCoordinates = {}; 
+    var totalIncidents = 0; 
 
     smallest.features.forEach(function (feature) {
         var properties = feature.properties;
@@ -109,12 +109,12 @@
 
             // Check if these coordinates have been added before
             if (coordinatesKey in addedCoordinates) {
-                // Randomize the coordinates slightly
-                lat += (Math.random() - 0.5) / 150; // Adjust the randomization factor as needed
+                // Randomize coordinates slightly
+                lat += (Math.random() - 0.5) / 150; 
                 lng += (Math.random() - 0.5) / 150;
             }
             
-            addedCoordinates[coordinatesKey] = true; // Mark these coordinates as added
+            addedCoordinates[coordinatesKey] = true; 
 
             var popupContent = "<b>Date:</b> " + properties.Day + "/" + properties.Month + "/" + properties.Year + "<br>" +
                 "<b>Group Name:</b> " + properties.group_name + "<br>" +
@@ -136,12 +136,11 @@
             var marker = L.marker([lat, lng], { icon: markerIcon }).bindPopup(popupContent);
 
             markers.addLayer(marker);
-            totalIncidents++; // Increment total incidents count
+            totalIncidents++; 
         }
     });
 
     document.getElementById('yearDisplay').innerText = year;
-    console.log("Total Incidents Shown:", totalIncidents); // Log total incidents shown
 };
 
     var yearSlider = document.getElementById("yearRange");

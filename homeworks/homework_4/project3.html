@@ -68,7 +68,7 @@ var markers = L.markerClusterGroup({
     iconCreateFunction: function(cluster) {
         return L.divIcon({ 
             className: 'custom-cluster-icon', // Add a custom class for styling
-            html: '<div style="background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: black;">' + cluster.getChildCount() + '</span></div>'
+            html: '<div style="background-color: black; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: white;">' + cluster.getChildCount() + '</span></div>'
         });
     }
 });
