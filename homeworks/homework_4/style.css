@@ -1,0 +1,102 @@
+
+    #mapid1{ width: 75%;
+        height: 670px;
+        margin: 0 auto; /* Add this line to center the map horizontally */
+        display: grid; /* Add this line to use CSS grid */
+        place-items: center; /* Add this line to center the map both horizontally and vertically */
+    }
+
+    #mapid2{ width: 75%;
+        height: 670px;
+        margin: 0 auto; /* Add this line to center the map horizontally */
+        display: grid; /* Add this line to use CSS grid */
+        place-items: center; /* Add this line to center the map both horizontally and vertically */
+    }
+
+    #mapid3{ width: 75%;
+        height: 670px;
+        margin: 0 auto; /* Add this line to center the map horizontally */
+        display: grid; /* Add this line to use CSS grid */
+        place-items: center; /* Add this line to center the map both horizontally and vertically */
+    }
+
+
+    #mapid4{ width: 75%;
+        height: 670px;
+        margin: 0 auto; /* Add this line to center the map horizontally */
+        display: grid; /* Add this line to use CSS grid */
+        place-items: center; /* Add this line to center the map both horizontally and vertically */
+    }
+
+
+    h1 {
+        text-align: center;
+        color:black;
+        font-size: x-large;
+    }
+    h2 {
+        text-align: center;
+        color:black;
+        font-size: x-large;
+    }
+
+    h3 {
+        color:black;
+        font-size: x-large;
+    }
+
+    h4 {
+        color:black;
+        font-size: large;
+    }
+
+    h5 {
+        text-align: center;
+        color:black;
+        font-size: xx-large;
+    }
+
+    .slidecontainer {
+        width: 60%;
+        margin: auto;
+        text-align: center;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.9;
+        -webkit-transition: .2s;
+        transition: opacity .1s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #91a1e9;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #91a1e9;
+        cursor: pointer;
+    }
+
+
+    .legend3 {
+        background-color: rgba(246, 239, 239, 0.7); /* Adjust the last value (0.8) for transparency */
+        padding: 0 10px 10px 10px; /* top: 0, right: 10px, bottom: 10px, left: 10px */
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+    }

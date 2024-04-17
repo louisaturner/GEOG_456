@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Projects</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+    
+</head>
+<link rel="stylesheet" href="./style.css">
+<script src="data/smallest.js"></script>
+
+<body> 
+    <h5>Historical Incident Data from the Lebanese Civil War (1975-1989)</h5>
+    <br>
+    <h1>Heatmap of Incidents in the Middle East During The Lebanese Civil War (1975-1989)</h1>
+    <div id="mapid1"></div> 
+
+<script>
+    var map1 = L.map('mapid1').setView([33.81673596567925, 45], 6); 
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
+    }).addTo(map1);
+
+    var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
+    var startDate = new Date(1975, 0, 1); 
+    var endDate = new Date(1989, 11, 31); 
+    var filteredFeatures = smallest.features.filter(function(feature) {
+        var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+        return desiredCountries.includes(feature.properties.country_name) &&
+            featureDate >= startDate && featureDate <= endDate;
+    });
+
+    // Extract coordinates from filtered features
+    var incidents = [];
+
+    filteredFeatures.forEach(function(feature) {
+        if (feature.geometry && feature.geometry.coordinates) {
+            var coordinates = feature.geometry.coordinates;
+            var latLng = L.latLng(coordinates[1], coordinates[0]); 
+            incidents.push(latLng);
+        }
+    });
+
+    // Create heatmap layer
+    var heat1 = L.heatLayer(incidents, {
+        radius: 55,
+        blur: 15,
+        maxZoom: 17,
+        gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', .9: 'red' },
+    });
+
+    heat1.addTo(map1);
+
+</script>
+</body>
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+<body>
+    <h1>Heatmap of Incidents within Lebanon During The Lebanese Civil War (1975-1989)</h1>
+    <div class="slidecontainer">
+        <input type="range" min="1975" max="1989" value="1975" class="slider" id="yearRange2">
+        <h3>Year: <span id="yearDisplay2">1975</span></h3>
+    </div>
+    <div id="mapid2"></div>
+    <script src="data/smallest.js"></script>
+
+<script>
+    var map2 = L.map('mapid2').setView([33.8547, 35.8623], 8); 
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
+    }).addTo(map2);
+
+    var desiredCountries = ["Lebanon"];
+    var startDate = new Date(1975, 0, 1); 
+    var endDate = new Date(1989, 11, 31); 
+    var filteredFeatures = smallest.features.filter(function(feature) {
+        var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+        return desiredCountries.includes(feature.properties.country_name) &&
+            featureDate >= startDate && featureDate <= endDate;
+    });
+
+    // Extract coordinates from filtered features
+    var incidents = [];
+    filteredFeatures.forEach(function(feature) {
+        if (feature.geometry && feature.geometry.coordinates) {
+            var coordinates = feature.geometry.coordinates;
+            var latLng = L.latLng(coordinates[1], coordinates[0]);
+            incidents.push(latLng);
+        }
+    });
+
+    // Create initial heatmap layer
+    var heat2 = L.heatLayer(incidents, {
+        radius: 55,
+        blur: 15,
+        maxZoom: 17,
+        gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', .9: 'red' }
+    }).addTo(map2);
+
+    var slider2 = document.getElementById("yearRange2");
+    var output = document.getElementById("yearDisplay2");
+
+    slider2.oninput = function() {
+        updateMap(this.value);
+    };
+
+    updateMap(slider2.value);
+
+    function updateMap(year){
+        // Filter features based on selected year
+        var filteredFeatures = smallest.features.filter(function(feature) {
+            var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+            return desiredCountries.includes(feature.properties.country_name) &&
+                featureDate.getFullYear() == year;
+        });
+
+        // Extract coordinates from filtered features
+        var newIncidents = [];
+        filteredFeatures.forEach(function(feature) {
+            if (feature.geometry && feature.geometry.coordinates) {
+                var coordinates = feature.geometry.coordinates;
+                var latLng = L.latLng(coordinates[1], coordinates[0]);
+                newIncidents.push(latLng);
+            }
+        });
+
+        // Update heatmap layer with new data
+        heat2.setLatLngs(newIncidents);
+
+        // Update year display
+        output2.textContent = year;
+    }
+</script>
+</body>
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+<body>
+    <h1>Incidents in the Middle East During The Lebanese Civil War (1975-1989) by Attack Type</h1>
+    <div id="mapid3"></div>
+    <script src="data/smallest.js"></script> 
+<script>
+
+// Upload leaflet Map
+var map3 = L.map('mapid3').setView([33.81673596567925, 45], 6); 
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
+}).addTo(map3);
+
+// Filters features for my data
+var filteredFeatures = smallest.features.filter(function(feature) {
+    var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
+    var startDate = new Date(1975, 0, 1); 
+    var endDate = new Date(1989, 11, 31); 
+    var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+    return desiredCountries.includes(feature.properties.country_name) &&
+        featureDate >= startDate && featureDate <= endDate;
+});
+
+// Creates a Marker Cluster Group
+var markers = L.markerClusterGroup({
+    iconCreateFunction: function(cluster) {
+        return L.divIcon({ 
+            className: 'custom-cluster-icon', // Add a custom class for styling
+            html: '<div style="background-color: black; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: white;">' + cluster.getChildCount() + '</span></div>'
+        });
+    }
+});
+
+// Icons
+var icons = {
+    'Hostage Taking (Kidnapping)': L.icon({ iconUrl: './data/KidnappingIcon.png', iconSize: [10, 10] }),
+    'Assassination': L.icon({ iconUrl: './data/AssassinationIcon.png', iconSize: [10, 10] }),
+    'Bombing/Explosion': L.icon({ iconUrl: './data/BombingIcon.png', iconSize: [10, 10] }),
+    'Facility/Infrastructure Attack': L.icon({ iconUrl: './data/FacilityAttackIcon.png', iconSize: [10, 10] }),
+    'Armed Assault': L.icon({ iconUrl: './data/ArmedAssaultIcon.png', iconSize: [10, 10] }),
+    'Hijacking': L.icon({ iconUrl: './data/HijackingIcon.png', iconSize: [10, 10] }),
+    'Unknown': L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }),
+    'Unarmed Assault': L.icon({ iconUrl: './data/UnarmedAssaultIcon.png', iconSize: [10, 10] }),
+    'Hostage Taking (Barricade Incident)': L.icon({ iconUrl: './data/BarricadeIcon.png', iconSize: [10, 10] })
+};
+
+// Function to get icon based on attack type
+function getIcon(type) {
+    return icons[type] || L.icon({ iconUrl: './data/UnknownIcon.png', iconSize: [10, 10] }); // Default icon if type not found
+};
+
+// attack type layer using markers 
+attackLayer = L.geoJSON(filteredFeatures, {
+    pointToLayer: function(feature, latlng) {
+    var properties = feature.properties;
+    var attackType = properties['Attack_type'];
+    var icon = getIcon(attackType);
+    var marker = L.marker(latlng, { icon: icon });
+
+    if (properties.summary) {
+        marker.bindPopup(properties.summary);
+    }
+    
+    markers.addLayer(marker); 
+}
+})
+
+// adds markers layer to map
+map3.addLayer(markers);
+
+//legend
+var legend3 = L.control({position: 'bottomright'});
+        legend3.onAdd = function (map3) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        attackTypes = Object.keys(icons);
+
+        div.innerHTML = '<h4>Attack Type</h4>';
+
+        for (var i = 0; i < attackTypes.length; i++) {
+            var attackType = attackTypes[i];
+            div.innerHTML +=
+                '<img src="' + icons[attackType].options.iconUrl + '" width="20" height="20">' + attackType + '<br>';
+        }
+        return div;
+        };
+
+    legend3.addTo(map3);
+
+</script>
+</body>
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+<body>
+    <h1>Summary of Incidents within Lebanon from 1975-1989</h1>
+    <div class="slidecontainer">
+        <input type="range" min="1975" max="1989" value="1975" class="slider" id="yearRange4">
+        <h3>Year: <span id="yearDisplay4">1975</span></h3>
+    </div>
+    <div id="mapid4"></div>
+
+    <script>
+        var map4 = L.map('mapid4').setView([33.8547, 35.8623], 8);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map4);
+
+        var desiredCountry = "Lebanon";
+        var markers = L.markerClusterGroup({
+            iconCreateFunction: function(cluster) {
+        return L.divIcon({ 
+            className: 'custom-cluster-icon', 
+            html: '<div style="background-color: black; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;"><span style="color: white;">' + cluster.getChildCount() + '</span></div>'
+        });
+    }
+    });markers.addTo(map4);
+
+    var updateMap = function (year) {
+    markers.clearLayers();
+    var addedCoordinates = {}; 
+    var totalIncidents = 0; 
+
+    smallest.features.forEach(function (feature) {
+        var properties = feature.properties;
+        if (properties.Year == year && properties.country_name == desiredCountry && feature.geometry) {
+            try {
+                var lat = feature.geometry.coordinates[1];
+                var lng = feature.geometry.coordinates[0];
+            } catch (error) {
+                console.error("Error reading coordinates:", error);
+                return; // Skip this incident if coordinates cannot be read
+            }
+
+            var coordinatesKey = lat.toFixed(3) + '_' + lng.toFixed(3); // Create a key for the coordinates
+
+            // Check if these coordinates have been added before
+            if (coordinatesKey in addedCoordinates) {
+                // Randomize coordinates slightly
+                lat += (Math.random() - 0.5) / 150; 
+                lng += (Math.random() - 0.5) / 150;
+            }
+            
+            addedCoordinates[coordinatesKey] = true; 
+
+            var popupContent = "<b>Date:</b> " + properties.Day + "/" + properties.Month + "/" + properties.Year + "<br>" +
+                "<b>Group Name:</b> " + properties.group_name + "<br>" +
+                "<b>Attack Type:</b> " + properties.Attack_type + "<br>" +
+                "<b>Target:</b> " + properties.Target_type + "(" + properties.Target_subtype + ")" + "<br>" +
+                "<b>Success:</b> " + properties.success + "<br>" +
+                "<b>Motive:</b> " + properties.motive + "<br>" +
+                "<b>Summary:</b> " + properties.summary;
+
+            var markerIcon = L.icon({
+                iconUrl: 'https://cdn2.iconfinder.com/data/icons/target-aim/100/target_01_05_destination_marker_place_contour_location_map-1024.png',
+                iconSize: [41, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+            });
+
+            var marker = L.marker([lat, lng], { icon: markerIcon }).bindPopup(popupContent);
+
+            markers.addLayer(marker);
+            totalIncidents++; 
+        }
+    });
+
+    document.getElementById('yearDisplay4').innerText = year;
+};
+
+    var yearSlider = document.getElementById("yearRange4");
+    yearSlider.oninput = function () {
+        updateMap(this.value);
+    };
+
+        updateMap(yearSlider.value);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
