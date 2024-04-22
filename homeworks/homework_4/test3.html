@@ -1,148 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Final Project- Map 1!</title>
+    <title>Heatmap Legend</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
     integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
     integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
     crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script> 
     <style>
         #mapid{ width: 100%; height: 670px; }
 
-        h1 {
-            text-align: center;
-            color:black;
-            font-size: xx-large;
+        .legend2 {
+            display: flex;
+            justify-content: space-around;
+            color: #555;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+            border-radius: 5px;
+            font-size: 12px;
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            z-index: 999;
         }
-        h3 {
-            color:black;
-            font-size: x-large;
+        .legend2 div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        h4 {
-            color:black;
-            font-size: large;
-        }
-
-        .slidecontainer {
-            width: 60%;
-            margin: auto;
-            text-align: center;
-        }
-
-        .slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 15px;
-            background: #d3d3d3;
-            outline: none;
-            opacity: 0.9;
-            -webkit-transition: .2s;
-            transition: opacity .1s;
-        }
-
-        .slider:hover {
-            opacity: 1;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 25px;
-            height: 25px;
-            background: #91a1e9;
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 25px;
-            height: 25px;
-            background: #91a1e9;
-            cursor: pointer;
+        .legend2 p {
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <h1>Heatmap of Incidents in the Middle East During The Lebanese Civil War (1975-1989)</h1>
-    <div class="slidecontainer">
-        <input type="range" min="1975" max="1989" value="1975" class="slider" id="yearRange">
-        <h3>Year: <span id="yearDisplay">1975</span></h3>
-    </div>
     <div id="mapid"></div>
-    <script src="data/smallest.js"></script>
+    <div class="legend2">
+        <div>
+            <div style="background: linear-gradient(to right, blue, cyan); width: 100px; height: 20px;"></div>
+            <p>0.1 - 0.2</p>
+        </div>
+        <div>
+            <div style="background: linear-gradient(to right, cyan, lime); width: 100px; height: 20px;"></div>
+        </div>
+        <div>
+            <div style="background: linear-gradient(to right, lime, yellow); width: 100px; height: 20px;"></div>
+        </div>
+        <div>
+            <div style="background: linear-gradient(to right, yellow, orange); width: 100px; height: 20px;"></div>
+        </div>
+        <div>
+            <div style="background: linear-gradient(to right, orange, red); width: 100px; height: 20px;"></div>
+            <p>0.6 - 0.9</p>
+        </div>
+        </div>
+    </div>
+    <script>
+        var map = L.map('mapid').setView([33.81673596567925, 45], 6);
 
-<script>
-    var map = L.map('mapid').setView([33.81673596567925, 45], 6); 
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
-    }).addTo(map);
+        var incidents = []; // Your incidents data
 
-    var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
-    var startDate = new Date(1975, 0, 1); 
-    var endDate = new Date(1989, 11, 31); 
-    var filteredFeatures = smallest.features.filter(function(feature) {
-        var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
-        return desiredCountries.includes(feature.properties.country_name) &&
-            featureDate >= startDate && featureDate <= endDate;
-    });
-
-    // Extract coordinates from filtered features
-    var incidents = [];
-    filteredFeatures.forEach(function(feature) {
-        if (feature.geometry && feature.geometry.coordinates) {
-            var coordinates = feature.geometry.coordinates;
-            var latLng = L.latLng(coordinates[1], coordinates[0]);
-            incidents.push(latLng);
-        }
-    });
-
-    // Create initial heatmap layer
-    var heat = L.heatLayer(incidents, {
-        radius: 55,
-        blur: 15,
-        maxZoom: 17,
-        gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', .9: 'red' }
-    }).addTo(map);
-
-    var slider = document.getElementById("yearRange");
-    var output = document.getElementById("yearDisplay");
-
-    slider.oninput = function() {
-        updateMap(this.value);
-    };
-
-    updateMap(slider.value);
-
-    function updateMap(year){
-        // Filter features based on selected year
-        var filteredFeatures = smallest.features.filter(function(feature) {
-            var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
-            return desiredCountries.includes(feature.properties.country_name) &&
-                featureDate.getFullYear() == year;
-        });
-
-        // Extract coordinates from filtered features
-        var newIncidents = [];
-        filteredFeatures.forEach(function(feature) {
-            if (feature.geometry && feature.geometry.coordinates) {
-                var coordinates = feature.geometry.coordinates;
-                var latLng = L.latLng(coordinates[1], coordinates[0]);
-                newIncidents.push(latLng);
-            }
-        });
-
-        // Update heatmap layer with new data
-        heat.setLatLngs(newIncidents);
-
-        // Update year display
-        output.textContent = year;
-    }
-</script>
+        var heat1 = L.heatLayer(incidents, {
+            radius: 55,
+            blur: 15,
+            maxZoom: 17,
+            gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', 0.9: 'red' }
+        }).addTo(map);
+    </script>
 </body>
 </html>

@@ -1,20 +1,22 @@
 
+    body{background-color:#edf2f2;}
+        
     #mapid1{ width: 75%;
-        height: 670px;
+        height: 600px;
         margin: 0 auto; /* Add this line to center the map horizontally */
         display: grid; /* Add this line to use CSS grid */
         place-items: center; /* Add this line to center the map both horizontally and vertically */
     }
 
     #mapid2{ width: 75%;
-        height: 670px;
+        height: 600px;
         margin: 0 auto; /* Add this line to center the map horizontally */
         display: grid; /* Add this line to use CSS grid */
         place-items: center; /* Add this line to center the map both horizontally and vertically */
     }
 
     #mapid3{ width: 75%;
-        height: 670px;
+        height: 600px;
         margin: 0 auto; /* Add this line to center the map horizontally */
         display: grid; /* Add this line to use CSS grid */
         place-items: center; /* Add this line to center the map both horizontally and vertically */
@@ -22,7 +24,7 @@
 
 
     #mapid4{ width: 75%;
-        height: 670px;
+        height: 600px;
         margin: 0 auto; /* Add this line to center the map horizontally */
         display: grid; /* Add this line to use CSS grid */
         place-items: center; /* Add this line to center the map both horizontally and vertically */
@@ -33,27 +35,43 @@
         text-align: center;
         color:black;
         font-size: x-large;
+        font-family:'Trebuchet MS';
     }
     h2 {
         text-align: center;
         color:black;
-        font-size: x-large;
+        font-size: large;
+        font-family:'Trebuchet MS';
     }
 
     h3 {
         color:black;
+        font-family:'Trebuchet MS';
         font-size: x-large;
     }
 
     h4 {
         color:black;
+        font-family:'Trebuchet MS';
         font-size: large;
     }
 
     h5 {
         text-align: center;
+        color:rgb(27, 103, 55);
+        font-family:'Trebuchet MS';
+        font-size: 300%;
+        margin-top: 50px;
+        margin-bottom: 15px;
+    }
+
+    h6 {
+        text-align: center;
         color:black;
-        font-size: xx-large;
+        font-size: 120%;
+        font-family:'Trebuchet MS';
+        margin-bottom: 25px;
+        margin-top: 45px;
     }
 
     .slidecontainer {
@@ -94,9 +112,51 @@
     }
 
 
-    .legend3 {
-        background-color: rgba(246, 239, 239, 0.7); /* Adjust the last value (0.8) for transparency */
+    .legend {
+        background-color: rgba(246, 239, 239, 0.9); /* Adjust the last value (0.8) for transparency */
         padding: 0 10px 10px 10px; /* top: 0, right: 10px, bottom: 10px, left: 10px */
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+        font-family:'Trebuchet MS';
     }
+
+    .legend2 {
+        display:flex;
+        color: black;
+        background-color: #fff;
+        padding: 10px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        border-radius: 5px;
+        font-size: 12px;
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        z-index: 999;
+    }
+    .legend2 div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .legend2 p {
+        margin: 0;
+        font-family:'Trebuchet MS';
+    }
+
+
+
+    .row {
+        /* width: 600px;  */
+        width: 95vw;
+        background-color: rgb(28, 28, 28); /* Just for demonstration */
+        padding: 20px;
+        border: 1px solid black;
+        display: flex;
+      }
+
+      /* Creates two equal columns */
+      .column {
+        flex: 33%;
+        padding: 15px;
+        overflow: hidden; /* Prevent overflow */
+      }

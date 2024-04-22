@@ -14,166 +14,225 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
     
 </head>
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="style.css">
 <script src="data/smallest.js"></script>
 
+
 <body> 
-    <h5>Historical Incident Data from the Lebanese Civil War (1975-1989)</h5>
-    <br>
-    <h1>Heatmap of Incidents in the Middle East During The Lebanese Civil War (1975-1989)</h1>
-    <div id="mapid1"></div> 
+<h5>The Lebanese Civil War</h5>
+<h2>Louisa Turner - April 21st, 2024</h2>
+<h6>This webpage will guide you through a brief overview of the Lebanese Civil War, which took place from 1975 to 1989.</h6>
+<div class="row">
+    <div class="column">
+        <a href = "https://media.gettyimages.com/photos/people-of-beirut-stroll-along-destroyed-and-damaged-buildings-the-picture-id607382598?k=6&m=607382598&s=594x594&w=0&h=rWyks9GkK-tiR7BrsYtgNpluy8j1bmBuoa_erNz0XlQ=">
+        <img  src="https://media.gettyimages.com/photos/people-of-beirut-stroll-along-destroyed-and-damaged-buildings-the-picture-id607382598?k=6&m=607382598&s=594x594&w=0&h=rWyks9GkK-tiR7BrsYtgNpluy8j1bmBuoa_erNz0XlQ=" alt="2012" style="width:100%; height:350px">
+        </a>
+    </div>
+    <div class="column">
+        <a href = "https://cdn.britannica.com/61/196761-050-93742122/view-remains-barracks-terrorist-bomb-attack-US-1983.jpg?w=400&h=300&c=crop">
+        <img  src="https://cdn.britannica.com/61/196761-050-93742122/view-remains-barracks-terrorist-bomb-attack-US-1983.jpg?w=400&h=300&c=crop" alt="2020" style="width:100%; height:350px">
+        </a>
+    </div>
+    <div class="column">
+        <a href = "https://www.thoughtco.com/thmb/eVIWeKvV59T2aylW_Hb1H2eFNF4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-607440036-5922ffb03df78cf5faf99555.jpg">
+        <img  src="https://www.thoughtco.com/thmb/eVIWeKvV59T2aylW_Hb1H2eFNF4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-607440036-5922ffb03df78cf5faf99555.jpg" alt="2016" style="width:100%; height:350px">
+        </a>
+    </div>
+</div>
+<h5>Introduction</h5>
+<h6> The conflict was primarily fought between various religious and ethnic factions within Lebanon. The war was characterized by sectarian violence, foreign interventions, and numerous shifts in alliances. Political tensions were exacerbated by perceptions of unfair power-sharing among Lebanon's communities. The Maronite Christian community, traditionally the dominant political force, faced challenges from a growing Muslim population seeking a more equitable share of political power. Additionally, the influx of Palestinian refugees, displaced during the Arab-Israeli conflicts, further strained Lebanon's internal dynamics. </h6>
+
+
+<br>
+
+
+
+<h1>Heatmap of Incidents in the Middle East During The Lebanese Civil War (1975-1989)</h1>
+<div id="mapid1"></div> 
 
 <script>
-    var map1 = L.map('mapid1').setView([33.81673596567925, 45], 6); 
+var map1 = L.map('mapid1').setView([33.81673596567925, 45], 6); 
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 20
-    }).addTo(map1);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+subdomains: 'abcd',
+maxZoom: 20
+}).addTo(map1);
 
-    var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
-    var startDate = new Date(1975, 0, 1); 
-    var endDate = new Date(1989, 11, 31); 
-    var filteredFeatures = smallest.features.filter(function(feature) {
-        var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
-        return desiredCountries.includes(feature.properties.country_name) &&
-            featureDate >= startDate && featureDate <= endDate;
-    });
+var desiredCountries = ["Lebanon", "Israel", "Iran", "Syria", "Iraq", "Jordan"];
+var startDate = new Date(1975, 0, 1); 
+var endDate = new Date(1989, 11, 31); 
+var filteredFeatures = smallest.features.filter(function(feature) {
+    var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+    return desiredCountries.includes(feature.properties.country_name) &&
+        featureDate >= startDate && featureDate <= endDate;
+});
 
-    // Extract coordinates from filtered features
-    var incidents = [];
+// Extract coordinates from filtered features
+var incidents = [];
 
-    filteredFeatures.forEach(function(feature) {
-        if (feature.geometry && feature.geometry.coordinates) {
-            var coordinates = feature.geometry.coordinates;
-            var latLng = L.latLng(coordinates[1], coordinates[0]); 
-            incidents.push(latLng);
-        }
-    });
+filteredFeatures.forEach(function(feature) {
+    if (feature.geometry && feature.geometry.coordinates) {
+        var coordinates = feature.geometry.coordinates;
+        var latLng = L.latLng(coordinates[1], coordinates[0]); 
+        incidents.push(latLng);
+    }
+});
 
-    // Create heatmap layer
-    var heat1 = L.heatLayer(incidents, {
-        radius: 55,
-        blur: 15,
-        maxZoom: 17,
-        gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', .9: 'red' },
-    });
+// Create heatmap layer
+var heat1 = L.heatLayer(incidents, {
+    radius: 55,
+    blur: 15,
+    maxZoom: 17,
+    gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', .9: 'red' },
+});
 
-    heat1.addTo(map1);
+heat1.addTo(map1);
+
+var legend1 = L.control({position:'bottomleft'});
+    legend1.onAdd = function (map) {
+        var div1 = L.DomUtil.create('div', 'info legend2');
+        div1.innerHTML = `
+            <div>
+                <div style="background: linear-gradient(to right, blue, cyan); width: 100px; height: 20px;"></div>
+                <p>Least concentrated</p>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, cyan, lime); width: 100px; height: 20px;"></div>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, lime, yellow); width: 100px; height: 20px;"></div>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, yellow, orange); width: 100px; height: 20px;"></div>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, orange, red); width: 100px; height: 20px;"></div>
+                <p>Most concentrated</p>
+            </div>`;
+        return div1;
+    };
+    legend1.addTo(map1);
 
 </script>
 </body>
 
-
-
-
-
-<br>
-<br>
-<br>
 <br>
 
 
-
-
-<body>
-    <h1>Heatmap of Incidents within Lebanon During The Lebanese Civil War (1975-1989)</h1>
+<h1>Heatmap of Incidents within Lebanon During The Lebanese Civil War (1975-1989)</h1>
     <div class="slidecontainer">
         <input type="range" min="1975" max="1989" value="1975" class="slider" id="yearRange2">
         <h3>Year: <span id="yearDisplay2">1975</span></h3>
     </div>
     <div id="mapid2"></div>
-    <script src="data/smallest.js"></script>
+    <script>
+        var map2 = L.map('mapid2').setView([33.8547, 35.8623], 8); 
 
-<script>
-    var map2 = L.map('mapid2').setView([33.8547, 35.8623], 8); 
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map2);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
-    }).addTo(map2);
-
-    var desiredCountries = ["Lebanon"];
-    var startDate = new Date(1975, 0, 1); 
-    var endDate = new Date(1989, 11, 31); 
-    var filteredFeatures = smallest.features.filter(function(feature) {
-        var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
-        return desiredCountries.includes(feature.properties.country_name) &&
-            featureDate >= startDate && featureDate <= endDate;
-    });
-
-    // Extract coordinates from filtered features
-    var incidents = [];
-    filteredFeatures.forEach(function(feature) {
-        if (feature.geometry && feature.geometry.coordinates) {
-            var coordinates = feature.geometry.coordinates;
-            var latLng = L.latLng(coordinates[1], coordinates[0]);
-            incidents.push(latLng);
-        }
-    });
-
-    // Create initial heatmap layer
-    var heat2 = L.heatLayer(incidents, {
-        radius: 55,
-        blur: 15,
-        maxZoom: 17,
-        gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', .9: 'red' }
-    }).addTo(map2);
-
-    var slider2 = document.getElementById("yearRange2");
-    var output = document.getElementById("yearDisplay2");
-
-    slider2.oninput = function() {
-        updateMap(this.value);
-    };
-
-    updateMap(slider2.value);
-
-    function updateMap(year){
-        // Filter features based on selected year
-        var filteredFeatures = smallest.features.filter(function(feature) {
+        var desiredCountries2 = ["Lebanon"];
+        var startDate2 = new Date(1975, 0, 1); 
+        var endDate2 = new Date(1989, 11, 31); 
+        var filteredFeatures2 = smallest.features.filter(function(feature) {
             var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
-            return desiredCountries.includes(feature.properties.country_name) &&
-                featureDate.getFullYear() == year;
+            return desiredCountries2.includes(feature.properties.country_name) &&
+                featureDate >= startDate2 && featureDate <= endDate2;
         });
 
         // Extract coordinates from filtered features
-        var newIncidents = [];
-        filteredFeatures.forEach(function(feature) {
+        var incidents2 = [];
+        filteredFeatures2.forEach(function(feature) {
             if (feature.geometry && feature.geometry.coordinates) {
                 var coordinates = feature.geometry.coordinates;
                 var latLng = L.latLng(coordinates[1], coordinates[0]);
-                newIncidents.push(latLng);
+                incidents2.push(latLng);
             }
         });
 
-        // Update heatmap layer with new data
-        heat2.setLatLngs(newIncidents);
+        // Create initial heatmap layer
+        var heat2 = L.heatLayer(incidents2, {
+            radius: 55,
+            blur: 15,
+            maxZoom: 17,
+            gradient: { 0.1: 'blue', 0.2: 'cyan', 0.3: 'lime', 0.4: 'yellow', 0.6: 'orange', .9: 'red' }
+        }).addTo(map2);
 
-        // Update year display
-        output2.textContent = year;
-    }
-</script>
+        var slider2 = document.getElementById("yearRange2");
+        var output2 = document.getElementById("yearDisplay2");
+
+        slider2.oninput = function() {
+            updateMap2(this.value);
+        };
+
+        updateMap2(slider2.value);
+
+        function updateMap2(year){
+            // Filter features based on selected year
+            var filteredFeatures2 = smallest.features.filter(function(feature) {
+                var featureDate = new Date(feature.properties.Year, feature.properties.Month - 1, feature.properties.Day);
+                return desiredCountries2.includes(feature.properties.country_name) &&
+                    featureDate.getFullYear() == year;
+            });
+
+            // Extract coordinates from filtered features
+            var newIncidents2 = [];
+            filteredFeatures2.forEach(function(feature) {
+                if (feature.geometry && feature.geometry.coordinates) {
+                    var coordinates = feature.geometry.coordinates;
+                    var latLng = L.latLng(coordinates[1], coordinates[0]);
+                    newIncidents2.push(latLng);
+                }
+            });
+
+            // Update heatmap layer with new data
+            heat2.setLatLngs(newIncidents2);
+
+            // Update year display
+            output2.textContent = year;
+        }
+
+    var legend3 = L.control({position:'bottomleft'});
+    legend3.onAdd = function (map) {
+        var div3 = L.DomUtil.create('div', 'info legend2');
+        div3.innerHTML = `
+            <div>
+                <div style="background: linear-gradient(to right, blue, cyan); width: 100px; height: 20px;"></div>
+                <p>Least concentrated</p>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, cyan, lime); width: 100px; height: 20px;"></div>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, lime, yellow); width: 100px; height: 20px;"></div>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, yellow, orange); width: 100px; height: 20px;"></div>
+            </div>
+            <div>
+                <div style="background: linear-gradient(to right, orange, red); width: 100px; height: 20px;"></div>
+                <p>Most concentrated</p>
+            </div>`;
+        return div3;
+    };
+    legend3.addTo(map2);
+    </script>
+
 </body>
 
 
-
-
+<h6>These heatmaps indicate the concentration of incidents during the Lebanese Civil War, not only within Lebanon but across the Middle East. In 1975, Lebanon's Muslims and leftists supported the Palestine Liberation Organization (PLO) and sought more political power; its Christians, seeking to maintain their political dominance, opposed the PLO. The factions fought fiercely through early 1976, and Lebanon became effectively partitioned, with the Christians in power in the north and the Muslims in the south. </h6>
+<h5>Taking A Closer Look</h5>
 
 <br>
-<br>
-<br>
-<br>
-
-
-
 
 <body>
     <h1>Incidents in the Middle East During The Lebanese Civil War (1975-1989) by Attack Type</h1>
     <div id="mapid3"></div>
-    <script src="data/smallest.js"></script> 
 <script>
 
 // Upload leaflet Map
@@ -262,17 +321,9 @@ var legend3 = L.control({position: 'bottomright'});
 </script>
 </body>
 
-
-
-
+<h6>The war continued throughout the 70's and into the 80's, characterized by a wide variety of core issues, motives, and attacks. This map emphasizes the damage within Lebanon, particuraly Beirut, as it experienced tremendous damage during the war. </h6>
 
 <br>
-<br>
-<br>
-<br>
-
-
-
 
 <body>
     <h1>Summary of Incidents within Lebanon from 1975-1989</h1>
@@ -363,6 +414,13 @@ var legend3 = L.control({position: 'bottomright'});
         updateMap(yearSlider.value);
     </script>
 </body>
+
+<h6>To learn a bit more about these incidents, this map allows users to witness incidents and attacks throughout the years. 
+    Each incident contains the date it occurred, the group's name who committed the attack, the attack type, the targets, whether or not it was a success, motive, and a detailed summary (if available) of the attack. From this map, we are also able to witness the varying extent of incidents that occurred during the civil war years, with a heightened number of attacks during 1983. This year was a pivotal moment in the war. 
+    Hezbollah, a Shiite militant group backed by Iran, emerged during this time. They vehemently opposed the Israeli occupation and began launching attacks against Israeli forces. Moreover, factional fighting continued throughout the year, with clashes between Lebanese militias, Syrian forces, and Palestinian factions.
+
+</h6>
+
 </html>
 
 
