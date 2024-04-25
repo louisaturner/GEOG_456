@@ -130,9 +130,9 @@
 
     .row {
         /* width: 600px;  */
-        width: 95vw;
+        width: 94vw;
         background-color: rgb(28, 28, 28); /* Just for demonstration */
-        padding: 20px;
+        padding: 30px;
         border: 1px solid black;
         display: flex;
       }
