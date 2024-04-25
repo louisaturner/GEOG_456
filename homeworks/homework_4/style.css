@@ -1,35 +1,18 @@
 
     body{background-color:#edf2f2;}
         
-    #mapid1{ width: 75%;
+    #mapid1, #mapid2, #mapid3, #mapid4 {
+        width: 75%;
         height: 600px;
         margin: 0 auto; /* Add this line to center the map horizontally */
         display: grid; /* Add this line to use CSS grid */
         place-items: center; /* Add this line to center the map both horizontally and vertically */
+        transition: box-shadow 0.3s ease; /* Add transition for smooth hover effect */
     }
-
-    #mapid2{ width: 75%;
-        height: 600px;
-        margin: 0 auto; /* Add this line to center the map horizontally */
-        display: grid; /* Add this line to use CSS grid */
-        place-items: center; /* Add this line to center the map both horizontally and vertically */
+    
+    #mapid1:hover, #mapid2:hover, #mapid3:hover, #mapid4:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add box-shadow on hover */
     }
-
-    #mapid3{ width: 75%;
-        height: 600px;
-        margin: 0 auto; /* Add this line to center the map horizontally */
-        display: grid; /* Add this line to use CSS grid */
-        place-items: center; /* Add this line to center the map both horizontally and vertically */
-    }
-
-
-    #mapid4{ width: 75%;
-        height: 600px;
-        margin: 0 auto; /* Add this line to center the map horizontally */
-        display: grid; /* Add this line to use CSS grid */
-        place-items: center; /* Add this line to center the map both horizontally and vertically */
-    }
-
 
     h1 {
         text-align: center;
@@ -45,33 +28,36 @@
     }
 
     h3 {
+        text-align: center;
         color:black;
         font-family:'Trebuchet MS';
         font-size: x-large;
     }
 
     h4 {
-        color:black;
+        color:rgb(255, 255, 255);
+        font-size: 170%;
         font-family:'Trebuchet MS';
-        font-size: large;
+        text-align: center;
     }
 
     h5 {
         text-align: center;
         color:rgb(27, 103, 55);
         font-family:'Trebuchet MS';
-        font-size: 300%;
+        font-size: 400%;
         margin-top: 50px;
         margin-bottom: 15px;
+        font-weight: 600;
     }
 
     h6 {
-        text-align: center;
+
         color:black;
         font-size: 120%;
         font-family:'Trebuchet MS';
-        margin-bottom: 25px;
-        margin-top: 45px;
+        margin-bottom: 10px;
+        margin-top: 10px;
     }
 
     .slidecontainer {
@@ -100,17 +86,16 @@
         appearance: none;
         width: 25px;
         height: 25px;
-        background: #91a1e9;
+        background: rgb(27, 103, 55);
         cursor: pointer;
     }
 
     .slider::-moz-range-thumb {
         width: 25px;
         height: 25px;
-        background: #91a1e9;
+        background: rgb(27, 103, 55);
         cursor: pointer;
     }
-
 
     .legend {
         background-color: rgba(246, 239, 239, 0.9); /* Adjust the last value (0.8) for transparency */
@@ -143,8 +128,6 @@
         font-family:'Trebuchet MS';
     }
 
-
-
     .row {
         /* width: 600px;  */
         width: 95vw;
@@ -160,3 +143,51 @@
         padding: 15px;
         overflow: hidden; /* Prevent overflow */
       }
+
+      .finalnotecontainer {
+        background-color: rgb(30, 122, 64);
+        color: #fff;
+        padding: 5px 50px;
+        border-radius: 20px;
+        margin: 10px;
+        font-family: 'Trebuchet MS';
+        font-size: 14px;
+    }
+
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 10%;
+    }
+
+    .textcontainer{
+        width: 80%;
+        overflow:hidden;
+        margin: 15px 0;
+        text-align: justify;
+        padding: 0 10px; /* Add padding on both sides */
+    }
+
+    .titlecontainer {
+        background-color: rgb(30, 122, 64);
+        color: #fff;
+        padding: 5px 40px;
+        border-radius: 20px;
+        margin: 10px 5px;
+        font-family: 'Trebuchet MS';
+        font-size: 22px;
+        font-weight: bold;
+    }
+    
+    .arrow-down {
+        width: 0; 
+        height: 0; 
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 30px solid rgb(30, 122, 64);
+    }
+    /*.buttoncontainer:hover {
+        background-color: rgb(21, 86, 44);
+        transform: scale(1.05); Slight increase on hover
+        text-decoration: none; Removes underline on hover }

@@ -21,7 +21,11 @@
 <body> 
 <h5>The Lebanese Civil War</h5>
 <h2>Louisa Turner - April 21st, 2024</h2>
-<h6>This webpage will guide you through a brief overview of the Lebanese Civil War, which took place from 1975 to 1989.</h6>
+<h2>The University of North Carolina at Chapel Hill</h2>
+<div class = "container">
+    <div class="arrow-down"></div>
+</div>
+<h3>This webpage will guide you through a brief overview of the Lebanese Civil War, which took place from 1975 to 1989.</h3>
 <div class="row">
     <div class="column">
         <a href = "https://media.gettyimages.com/photos/people-of-beirut-stroll-along-destroyed-and-damaged-buildings-the-picture-id607382598?k=6&m=607382598&s=594x594&w=0&h=rWyks9GkK-tiR7BrsYtgNpluy8j1bmBuoa_erNz0XlQ=">
@@ -39,10 +43,21 @@
         </a>
     </div>
 </div>
-<h5>Introduction</h5>
-<h6> The conflict was primarily fought between various religious and ethnic factions within Lebanon. The war was characterized by sectarian violence, foreign interventions, and numerous shifts in alliances. Political tensions were exacerbated by perceptions of unfair power-sharing among Lebanon's communities. The Maronite Christian community, traditionally the dominant political force, faced challenges from a growing Muslim population seeking a more equitable share of political power. Additionally, the influx of Palestinian refugees, displaced during the Arab-Israeli conflicts, further strained Lebanon's internal dynamics. </h6>
 
+<div class = "container">
+    <div class = "titlecontainer">
+        <h4>Introduction</h4>
+    </div>
+</div>
+<div class="container">
+    <div class="textcontainer">
+    <h6> The conflict was primarily fought between various religious and ethnic factions within Lebanon. The war was characterized by sectarian violence, foreign interventions, and numerous shifts in alliances. Political tensions were exacerbated by perceptions of unfair power-sharing among Lebanon's communities. The Maronite Christian community, traditionally the dominant political force, faced challenges from a growing Muslim population seeking a more equitable share of political power. Additionally, the influx of Palestinian refugees, displaced during the Arab-Israeli conflicts, further strained Lebanon's internal dynamics. Take a look at this heatmap to learn about where incidents during the decades-long conflict were concentrated! </h6>
+    </div>
+</div>
 
+<div class = "container">
+    <div class="arrow-down"></div>
+</div>
 <br>
 
 
@@ -115,6 +130,26 @@ var legend1 = L.control({position:'bottomleft'});
     legend1.addTo(map1);
 
 </script>
+<div class="container">
+    <div class="textcontainer">
+    <h6>
+        Feel free to zoom in on areas that interest you, and use the heatmap legend to distinguish the concentration of incidents.
+    </h6>
+    </div>
+</div>
+
+<div class = "container">
+    <div class="arrow-down"></div>
+</div>
+
+<div class="container">
+    <div class="textcontainer">
+        <h6>
+            To analyze the Civil War through a temporal lense, use the slider in the next map to move through the war years, using the legend to aid understanding. Again, feel free to zoom on areas of interest.
+        </h6>        
+    </div>
+</div>
+
 </body>
 
 <br>
@@ -224,9 +259,22 @@ var legend1 = L.control({position:'bottomleft'});
 
 </body>
 
-
-<h6>These heatmaps indicate the concentration of incidents during the Lebanese Civil War, not only within Lebanon but across the Middle East. In 1975, Lebanon's Muslims and leftists supported the Palestine Liberation Organization (PLO) and sought more political power; its Christians, seeking to maintain their political dominance, opposed the PLO. The factions fought fiercely through early 1976, and Lebanon became effectively partitioned, with the Christians in power in the north and the Muslims in the south. </h6>
-<h5>Taking A Closer Look</h5>
+<div class="container">
+    <div class="textcontainer">
+        <h6>These heatmaps indicate the concentration of incidents during the Lebanese Civil War, not only within Lebanon but across the Middle East. In 1975, Lebanon's Muslims and leftists supported the Palestine Liberation Organization (PLO) and sought more political power; its Christians, seeking to maintain their political dominance, opposed the PLO. The factions fought fiercely through early 1976, and Lebanon became effectively partitioned, with the Christians in power in the north and the Muslims in the south. 
+            From this map, we are also able to witness the varying extent of incidents that occurred during the civil war years, with a heightened number of attacks during 1983. This year was a pivotal moment in the war. 
+            Hezbollah, a Shiite militant group backed by Iran, emerged during this time. They vehemently opposed the Israeli occupation and began launching attacks against Israeli forces. Moreover, factional fighting continued throughout the year, with clashes between Lebanese militias, Syrian forces, and Palestinian factions.
+        </h6>
+        <h6>Geographically located in the center of the country and serving as the capital, Beirut was a hotspot for conflict throughout the years. 
+        Once known as the "Paris of the Middle East," Beirut suffered tremendous destruction during the war. The once-vibrant cityscape was transformed into a landscape of ruins, with iconic landmarks reduced to rubble and residential neighborhoods shattered by relentless violence. 
+        The city was divided into sectors controlled by different factions, including Christian militias, Muslim militias, and Palestinian groups. These groups fought for control of strategic areas, resulting in widespread destruction.</h6>
+    </div>
+</div>
+<div class="container">
+    <div class="titlecontainer">
+        <h4>Taking A Closer Look</h4>
+    </div>
+</div>
 
 <br>
 
@@ -306,7 +354,7 @@ var legend3 = L.control({position: 'bottomright'});
         var div = L.DomUtil.create('div', 'info legend'),
         attackTypes = Object.keys(icons);
 
-        div.innerHTML = '<h4>Attack Type</h4>';
+        div.innerHTML = '<h2>Attack Type</h2>';
 
         for (var i = 0; i < attackTypes.length; i++) {
             var attackType = attackTypes[i];
@@ -321,8 +369,19 @@ var legend3 = L.control({position: 'bottomright'});
 </script>
 </body>
 
-<h6>The war continued throughout the 70's and into the 80's, characterized by a wide variety of core issues, motives, and attacks. This map emphasizes the damage within Lebanon, particuraly Beirut, as it experienced tremendous damage during the war. </h6>
+<div class = "container">
+    <div class = "textcontainer">
+    <h6>The war continued throughout the 70's and into the 80's, characterized by a wide variety of core issues, motives, and attacks. Despite various attempts at ceasefire and peace negotiations, the war dragged on, with intermittent periods of calm punctuated by renewed violence. The conflict's impact extended far beyond Lebanon's borders, shaping regional dynamics and leaving a lasting legacy of instability in the Middle East. This map emphasizes the damage within Lebanon, particuraly Beirut, as it experienced tremendous damage during the war.   
+    </h6>
+    <h6>
+    The numbers on the black dots represent the total number of incidents that occurred within that area, but as you zoom the clusters dissipate and represent individual incidents. The legend indicates the color of the incident's attack type. I recommend investigating Lebanon, specifically Beirut, and clicking on the "742" size cluster to see the attack types of 742 incidents that took place in Beirut.
+    </h6>
+    </div>
+</div>
 
+<div class = "container">
+    <div class="arrow-down"></div>
+</div>
 <br>
 
 <body>
@@ -415,11 +474,38 @@ var legend3 = L.control({position: 'bottomright'});
     </script>
 </body>
 
-<h6>To learn a bit more about these incidents, this map allows users to witness incidents and attacks throughout the years. 
-    Each incident contains the date it occurred, the group's name who committed the attack, the attack type, the targets, whether or not it was a success, motive, and a detailed summary (if available) of the attack. From this map, we are also able to witness the varying extent of incidents that occurred during the civil war years, with a heightened number of attacks during 1983. This year was a pivotal moment in the war. 
-    Hezbollah, a Shiite militant group backed by Iran, emerged during this time. They vehemently opposed the Israeli occupation and began launching attacks against Israeli forces. Moreover, factional fighting continued throughout the year, with clashes between Lebanese militias, Syrian forces, and Palestinian factions.
+<div class = "container">
+    <div class = "textcontainer">
+    <h6>To learn a bit more about these incidents, this map allows you to witness incidents and attacks throughout the years. 
+    Each incident contains the date it occurred, the group's name who committed the attack, the attack type, the targets, whether or not it was a success, the motive (if known), and a detailed summary (if available) of the attack. 
+    </h6>
+    <h6>
+        The war came to an end in 1989 through The Taif Agreement, named after the city in Saudi Arabia where it was negotiated. It was a pivotal moment in ending the civil war, as it aimed to bring an end to the conflict by addressing the root causes of the war. The agreement called for the disarmament of militias, the withdrawal of foreign forces from Lebanon, and the reassertion of the Lebanese government's authority over the entire country. The Taif Agreement was ratified by the Lebanese Parliament in 1989, and it laid the groundwork for the end of the civil war. However, full implementation of the agreement took time, and it wasn't until 1990 that the Syrian-led military offensive against General Michel Aoun, who refused to accept the Taif Agreement, brought a final end to the war.  After the war ended, Lebanon faced the immense task of rebuilding the country and reconciling its divided communities. Reconstruction efforts, both domestically and with international assistance, aimed to restore infrastructure, revive the economy, and heal the wounds left by the war.
+    </h6>
+    </div>
+</div>
 
-</h6>
+<div class="finalnotecontainer">
+    <h4>
+        Data for this project is sourced from the <a href="https://www.start.umd.edu/gtd/">Global Terrorism Database</a>. Unlike many other event databases, the database includes systematic data on domestic as well as transnational and international terrorist incidents that have occurred during 1975-2020 and now includes more than 200,000 cases.
+    </h4>
+</div>
+
+<br>
+
+<div class = "container">
+    <div class="arrow-down"></div>
+</div>
+
+<div class = "container">
+    <div class = "textcontainer">
+    <h6> This webpage was built as a final project for UNC's Geovisualizing Change with Javier Arce-Nazario in the Geography Department. Coding assistance was provided by Javier and <a href="https://chat.openai.com/">Chat GPT.</a> 
+    </h6>
+    <h6>
+        Resources include <a href="https://www.britannica.com/event/Lebanese-Civil-War">Lebanese Civil War: History, & Significance</a>, <a href="https://merip.org/1990/01/primer-lebanons-15-year-war-1975-1990/">Lebanons 15-Year War: 1975-1990</a>, and <a href = "https://www.worldhistoryblog.com/Lebanese-Civil-War.html">Lebanese Civil War: Middle East [1975-1990]</a>.
+    </h6>
+</div>
+</div>
 
 </html>
 
