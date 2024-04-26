@@ -1,7 +1,7 @@
 
     body{background-color:#edf2f2;}
         
-    #mapid1, #mapid2, #mapid3, #mapid4 {
+    #mapid1, #mapid2, #mapid3, #mapid4, #mapid7 {
         width: 75%;
         height: 600px;
         margin: 0 auto; /* Add this line to center the map horizontally */

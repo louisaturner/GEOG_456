@@ -1,0 +1,22 @@
+body{
+    background-color:#edf2f2;
+}
+
+h1{
+    text-align: center;
+    color:rgb(27, 103, 55);
+}
+
+h2{
+    cursor:cell;
+    position: relative;
+    text-align: center;
+    top: 35%;
+    color:black;
+}
+
+h3{
+    cursor:cell;
+    color:black;
+    position: relative;
+}
